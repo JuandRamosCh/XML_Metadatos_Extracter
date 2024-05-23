@@ -8,6 +8,8 @@ Español:
 
 -Al poner la ruta de las carpetas, no hace falta cambiar los slahss. Puedes copiar y pegar directamente la ruta del explorador de archivos
 
+Trabajo hecho como ayuda en la investigación de Luis Oritgueira, trabajando como asistente de investigación en la Universidad del Pacífico
+
 English:
 
 -In the folder with the XMLs, the name of the files have to start with "Vol[Volume]-[issue]-"
@@ -17,3 +19,5 @@ English:
 -The folder where the metadata text files will go has to be created before running the code
 
 -When inputing the routes of the folders, it is not neccesary to change the slahes. You can copy and paste directly the route from the file exporer.
+
+Program made while helping in the investigation of Luis Oritgueira, working as research assistant in the Universidad del Pacífico.
