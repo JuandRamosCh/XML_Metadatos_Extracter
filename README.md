@@ -6,7 +6,7 @@ Español:
 
 -Tienes que crear la carpeta donde irán los archivos de texto de los metadatos antes de correr el código
 
--Al poner la ruta de las carpetas, no hace falta cambiar los "\"s. Puedes copiar y pegar directamente la ruta del explorador de archivos
+-Al poner la ruta de las carpetas, no hace falta cambiar los slahss. Puedes copiar y pegar directamente la ruta del explorador de archivos
 
 English:
 
@@ -16,4 +16,4 @@ English:
 
 -The folder where the metadata text files will go has to be created before running the code
 
--When inputing the routes of the folders, it is not neccesary to change the "\"s. You can copy and paste directly the route from the file exporer.
+-When inputing the routes of the folders, it is not neccesary to change the slahes. You can copy and paste directly the route from the file exporer.
