@@ -1,4 +1,16 @@
+![image](https://github.com/JuandRamosCh/XML_Metadatos_Extracter/assets/170454243/ed6c8abd-36ee-4506-bf6d-f95e60b267d2)
+
 Español:
+
+Instrucciones:
+
+-Crear una carpeta y poner los XMLs ahí
+
+-Crear otra carpeta vacía donde luego se pondrán los metadatos
+
+-Descargar el código de python y correrlo
+
+-Poner las rutas de las carpetas cuando se le sea solicitado
 
 -En la carpeta de XMLs, los nombres de los archivos tienen que empezar con la notación "Vol[Volumen]-[issue]-"
 
@@ -11,6 +23,16 @@ Español:
 Trabajo hecho como ayuda en la investigación de Luis Oritgueira, trabajando como asistente de investigación en la Universidad del Pacífico
 
 English:
+
+Instructions:
+
+-Create a folder and put the XMLs in there
+
+-Create an empyt folder where the metadata will go afterwards
+
+-Download and run the python code
+
+-Put the routes to the folders when asked to
 
 -In the folder with the XMLs, the name of the files have to start with "Vol[Volume]-[issue]-"
 
