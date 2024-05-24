@@ -1,5 +1,9 @@
 <img src="https://github.com/JuandRamosCh/XML_Metadatos_Extracter/assets/170454243/ed6c8abd-36ee-4506-bf6d-f95e60b267d2" width="200" />
 
+Trabajo hecho como ayuda en la investigación de Luis Oritgueira, trabajando como asistente de investigación en la Universidad del Pacífico
+(Program made while helping in the investigation of Luis Oritgueira, working as research assistant in the Universidad del Pacífico)
+
+
 Español:
 
 Instrucciones:
@@ -19,8 +23,6 @@ Instrucciones:
 -Tienes que crear la carpeta donde irán los archivos de texto de los metadatos antes de correr el código
 
 -Al poner la ruta de las carpetas, no hace falta cambiar los slahss. Puedes copiar y pegar directamente la ruta del explorador de archivos
-
-Trabajo hecho como ayuda en la investigación de Luis Oritgueira, trabajando como asistente de investigación en la Universidad del Pacífico
 
 English:
 
@@ -42,4 +44,3 @@ Instructions:
 
 -When inputing the routes of the folders, it is not neccesary to change the slahes. You can copy and paste directly the route from the file exporer.
 
-Program made while helping in the investigation of Luis Oritgueira, working as research assistant in the Universidad del Pacífico.
