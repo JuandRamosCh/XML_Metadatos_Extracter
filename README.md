@@ -1,4 +1,4 @@
-![image](https://github.com/JuandRamosCh/XML_Metadatos_Extracter/assets/170454243/ed6c8abd-36ee-4506-bf6d-f95e60b267d2)
+<img src="https://github.com/JuandRamosCh/XML_Metadatos_Extracter/assets/170454243/ed6c8abd-36ee-4506-bf6d-f95e60b267d2" width="200" />
 
 Español:
 
