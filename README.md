@@ -1,6 +1,7 @@
 <img src="https://github.com/JuandRamosCh/XML_Metadatos_Extracter/assets/170454243/ed6c8abd-36ee-4506-bf6d-f95e60b267d2" width="200" />
 
 Trabajo hecho como ayuda en la investigación de Luis Oritgueira, trabajando como asistente de investigación en la Universidad del Pacífico (Lima, Perú)
+
 Program made while helping in the investigation of Luis Oritgueira, working as research assistant in the Universidad del Pacífico (Lima, Perú)
 
 
