@@ -1,8 +1,8 @@
 <img src="https://github.com/JuandRamosCh/XML_Metadatos_Extracter/assets/170454243/ed6c8abd-36ee-4506-bf6d-f95e60b267d2" width="200" />
 
-Trabajo hecho como parte del proyecto de investigación de Luis Oritgueira, trabajando como asistente de investigación en el Centro de Investigación de la Universidad del Pacífico (Lima, Perú)
+Este código ha sido desarrollado como parte del proyecto de investigación del Dr. Luis Oritgueira de la Universidad del Pacífico (Lima, Péru), trabajando como asistente de investigación en el Centro de Investigación de la Universidad del Pacífico (Lima, Perú)
 
-Program made as a part of the research project of Luis Oritgueira, working as research assistant in the Centro de Investigación de la Universidad del Pacífico (Lima, Perú)
+This code was made as a part of the research project of  Dr. Luis Oritgueira from the Universidad del Pacífico (Lima, Perú), working as research assistant in the Centro de Investigación de la Universidad del Pacífico (Lima, Perú)
 
 
 Español:
