@@ -223,7 +223,7 @@ for filename in sorted_dict.values():
 #se pone los metadatos de cada volumen en la carpeta seleccionada     
 for i in range(len(listAcum)):
     final = listAcum[i] + "\n"   
-    f = open(f"{OutFold}/datos{i}.txt","w",encoding="utf-8")   
+    f = open(f"{OutFold}/datos{i}.rdf","w",encoding="utf-8")   
     f.write(final)
     f.close()
     
