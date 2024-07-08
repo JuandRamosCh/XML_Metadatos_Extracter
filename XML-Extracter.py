@@ -1,10 +1,11 @@
 import xml.etree.cElementTree as et #se importa el paquete que permite trabajar con xml
 import re  #se importa el paquete para reemplazar partes de strings
 import os  #se importa la librería os para trabajar con archiovs
+from unidecode import unidecode #se importa librería para estandarizar texto
 
-directory = input("Copie la ruta de la carpeta de los XMLs") 
+directory = "C:/Users\juand\OneDrive\Escritorio\RyS"
 directory = directory.replace("\\", "/")
-OutFold = input("Copie la ruta de la carpeta donde quieres que vayan los metadatos") 
+OutFold = "C:/Users\juand\OneDrive\Escritorio\StringsRyS" 
 OutFold = OutFold.replace("\\", "/")
 
 
@@ -20,7 +21,7 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
     contador = contInic
 
     function = "full text"                                                                      #Se define que irá en función
-    journal = "Revista Internacional de Gestión del Conocimiento y la Tecnología (GECONTEC)"    #Se define el nombre de la journal                  
+    journal = "Revista Internacional de Gestion del Conocimiento y la Tecnologia (GECONTEC)"    #Se define el nombre de la journal                  
     classification = "M1, M15, O3, O31, O32, D8, D81"                                           #Se define las clasificaciones
     template = "ReDIF-Article 1.0"                                                              #Se dfine el template
 
@@ -58,10 +59,14 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
         for child in root[ArtsInd][j][publi]:                       #pone todos los abstracts en una lista
             if "abstract" in child.tag:
                 listabstract.append("Abstract: "+child.text[3:-4])
-                
-        abstract = listabstract[-1]                                 #si hay uno agarra el único, sino agarra el útlimo que es el que está en español (idioma original)
-        abstract = re.sub(r'<[^>]*>', '', abstract)                 #Quita notaciones tipo "<texto>" que se usan para poner texto en negrita, cursiva o subrayado
-
+        
+        try:        
+            abstract = listabstract[-1]                                 #si hay uno agarra el único, sino agarra el útlimo que es el que está en español (idioma original)
+            abstract = re.sub(r'<[^>]*>', '', abstract)                 #Quita notaciones tipo "<texto>" que se usan para poner texto en negrita, cursiva o subrayado
+            abstract = unidecode(abstract)                              #se estandariza el texto
+        except IndexError:
+            abstract = "Abstract: "
+            
         #sacar title
         listTitle = []
         for child in root[ArtsInd][j][publi]:                       #pone los títulos en una lista
@@ -72,7 +77,9 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
         else:
             title = f"{listTitle[1][:-1]}({listTitle[0][7:-1]})"    #si hay título en el idioma original y en ingles, se pone el original y luego el de inglés entre paréntesis
             
-
+        
+        title = unidecode(title)                                    #se estandariza el título
+    
 
         #sacar las páginas que hay en un artículo
         for child in root[ArtsInd][j][publi]:
@@ -86,7 +93,7 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
             if "id" in child.tag:
                 list1.append(child.text)
         url = list1[-1]
-
+        
 
     #Datos de issue identification
         #sacar volumen del issue
@@ -123,7 +130,7 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
                 
                 
         nombre = '\n'.join(listNoms)        #se pone la lista de todos los datos como un string con los datos separados por un salto de línea
-
+        nombre = unidecode(nombre)          #se estandarizan los nombres
                     
 
         
@@ -133,7 +140,8 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
             if "submission_file" in root[ArtsInd][j][child].tag:
                 for i in range(len(root[ArtsInd][j][child])):
                     if "name" in root[ArtsInd][j][child][i].tag:
-                        formato = root[ArtsInd][j][child][i].text[-3:]
+                        if root[ArtsInd][j][child][i].text[-4:-3] == ".":
+                            formato = root[ArtsInd][j][child][i].text[-3:]
                 
            
         #sacar fecha del artículo (si no tiene fecha, se saca la del volumen)
@@ -163,21 +171,28 @@ def mDatos(filepath):   #definición de la función para extraer metadatos de un
         else:
             keywords = listkeywords[0]                                              #si hay una keyword, solo extrae esa
           
-        
+        keywords = unidecode(keywords)                                              #se estandarizan las keywords
  
         #se establece el handle con los datos extraídos        
         handle = "RePEc:rge:journl:"+"v:" + volume +":y:"+ año +":i:"+issue+":p:"+pages
             
         
         #Se ponen todos los metadatos extraídos en una lista
-        metadatos = [f"Template-Type: {template}",
-                     nombre,title,abstract,f"Classification-JEL: {classification}",
-                     f"Keywords: {keywords}",f"Journal: {journal}","Pages: "+pages,"Number: "+str(contador),f"volumen: {volume}", f"issue: {issue}",f"año:{año}",f"mes: {mes}",
-                     f"File-URL: {url}",f"File-Format: {formato}",f"File-Function: {function}",f"Handle: {handle}"]
         
+        if len(url)>5:
+            metadatos = [f"Template-Type: {template}",
+                         nombre,title,abstract,f"Classification-JEL: {classification}",
+                         f"Keywords: {keywords}",f"Journal: {journal}","Pages: "+pages,f"Volume: {volume}", f"Issue: {issue}",f"Year:{año}",f"Month: {mes}",
+                         f"File-URL: https://doi.org/{url}",f"File-Format: Application/{formato}",f"File-Function: {function}",f"Handle: {handle}"]
+        else:
+            metadatos = [f"Template-Type: {template}",
+                         nombre,title,abstract,f"Classification-JEL: {classification}",
+                         f"Keywords: {keywords}",f"Journal: {journal}","Pages: "+pages,f"Volume: {volume}", f"Issue: {issue}",f"Year:{año}",f"Month: {mes}",
+                         "File-URL: ",f"File-Format: Application/{formato}",f"File-Function: {function}",f"Handle: {handle}"]
         
+        #está sin número
         metadatosSTR = '\n'.join(metadatos)   #Poner los metadatos en un string y separarlos por líneas
-        metadatosSTR = metadatosSTR + '\n\n________________________________________________________\n\n\n'   #separa los artículos con una linea "_______" al final
+        metadatosSTR = metadatosSTR + '\n'   #separa los artículos con una linea "_______" al final
         agregM = agregM + metadatosSTR
         
         contador = contador+1   #hace que el contador del número del artículo suba en 1 para el próximo artículo
@@ -221,10 +236,32 @@ for filename in sorted_dict.values():
     
     
 #se pone los metadatos de cada volumen en la carpeta seleccionada     
-for i in range(len(listAcum)):
-    final = listAcum[i] + "\n"   
-    f = open(f"{OutFold}/datos{i}.rdf","w",encoding="utf-8")   
-    f.write(final)
-    f.close()
+#for i in range(len(listAcum)):
+#    final = listAcum[i] + "\n"   
+#    f = open(f"{OutFold}/datos{i}.rdf","w",encoding="utf-8")   
+#    f.write(final)
+#    f.close()
+    
+    
+acumTodo = ""
+
+for i in listAcum:
+    acumTodo += i
+    
+    
+f = open(f"{OutFold}/Papers.rdf","w",encoding="utf-8")   
+f.write(acumTodo)
+f.close()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 
