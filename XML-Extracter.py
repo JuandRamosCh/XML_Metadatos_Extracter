@@ -3,9 +3,9 @@ import re  #se importa el paquete para reemplazar partes de strings
 import os  #se importa la librería os para trabajar con archiovs
 from unidecode import unidecode #se importa librería para estandarizar texto
 
-directory = "Input_Folder"
+directory = input("Input_Folder")
 directory = directory.replace("\\", "/")
-OutFold = "Output_Folder" 
+OutFold = input("Output_Folder")
 OutFold = OutFold.replace("\\", "/")
 
 
