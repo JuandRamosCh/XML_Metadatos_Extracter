@@ -1,4 +1,4 @@
-#pip install unidecode
+#!pip install unidecode
 
 
 import xml.etree.cElementTree as et #se importa el paquete que permite trabajar con xml
