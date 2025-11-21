@@ -1,0 +1,431 @@
+listaURLS = ['https://larepublica.pe/','https://rpp.pe/','https://peru21.pe/','https://elcomercio.pe/','https://cnnespanol.cnn.com/latinoamerica/peru']
+listaURLS
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup as bs
+import requests as rq
+import time
+import pandas as pd
+
+creds = 'Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.6998.166 Safari/537.36'
+
+ural = 'https://rpp.pe/archivo/2025-11-19'
+driver = webdriver.Chrome()
+driver.get(ural)
+val = True
+wait = WebDriverWait(driver, 5)
+
+contador = 0
+
+while contador<=3:
+        time.sleep(3)
+        driver.execute_script("window.scrollBy(0, 400);")
+        try:
+            print("tratoclick")
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rpp-app"]/main/div[2]/div[1]/div[2]/button'))).click()
+            contador = 0
+        except:
+            driver.execute_script("window.scrollBy(0, 300);")
+            contador += 1
+        time.sleep(2)
+        
+
+lnks=driver.find_elements(By.TAG_NAME,"a")
+
+
+waow = [i.get_attribute("href") for i in lnks]
+indi = waow.index( 'https://newsletter.rpp.pe/catalogo')
+waow = waow[indi+1:]
+waow = [i for i in waow if len(i)>50]
+
+
+
+from unidecode import unidecode
+import re
+
+
+from nltk.corpus import stopwords
+sw = stopwords.words("spanish")
+
+
+def sacaText(url):
+    html = rq.get(url,headers = {"user-agent":creds}).content.decode("utf-8")
+    soup = bs(html)
+    try:
+        divs02 = soup.find("h1", class_ = "article__title")
+        divs0 = soup.find("div", class_ = "article__subtitle")
+    except:
+        lalgo = 0
+    try:
+        divs = soup.find("div", class_ = "body")
+        list1 = [divs02, divs0, divs]
+        list1 = [i.text.lower() for i in divs]
+    except:
+        return print(url,"no se pudo leer")
+    
+    
+    return " ".join([w for w in re.findall(r'[a-z]+',unidecode(" ".join(list1)).strip().lower()) if w not in sw])
+
+textos = []
+for i in waow[:-1]:
+    textos.append(sacaText(i))
+
+
+fecha = "18/11/2025"
+ural = 'https://larepublica.pe/ultimas-noticias'
+driver = webdriver.Chrome()
+driver.get(ural)
+val = True
+wait = WebDriverWait(driver, 5)
+
+contador = 0
+
+while val:
+        driver.execute_script("window.scrollBy(0, 7000);")
+        try:
+            #print("tratoclick")
+            driver.execute_script("window.scrollBy(0, 7000);")
+            time.sleep(2)
+            driver.execute_script("window.scrollBy(0, -1000);")
+            time.sleep(2)
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[5]/div[1]/section[1]/button'))).click()
+            lnks=driver.find_elements(By.TAG_NAME,"time")
+            waow = [i.text for i in lnks]
+            print(int(waow[-1][-10:][:2]))
+            if int(waow[-1][-10:][:2]) <= int(fecha[:2]):
+                val = False
+        except:
+            driver.execute_script("window.scrollBy(0, 7000);")
+        
+
+def sacaText(url):
+    html = rq.get(url,headers = {"user-agent":creds}).content.decode("utf-8")
+    soup = bs(html)
+    try:
+        divs02 = soup.find("h1", class_ = "article__title")
+        divs0 = soup.find("div", class_ = "article__subtitle")
+    except:
+        lalgo = 0
+    try:
+        divs = soup.find("div", class_ = "story-contents__content")
+        list1 = [divs02, divs0, divs]
+        list1 = [i.text.lower() for i in divs]
+    except:
+        return print(url,"no se pudo leer")
+    
+    
+    return " ".join([w for w in re.findall(r'[a-z]+',unidecode(" ".join(list1)).strip().lower()) if w not in sw])
+
+
+ural = 'https://gestion.pe/archivo/todas/2025-11-19/'
+driver = webdriver.Chrome()
+driver.get(ural)
+val = True
+wait = WebDriverWait(driver, 5)
+
+contador = 0
+
+while contador <= 3:
+        driver.execute_script("window.scrollBy(0, 10000);")
+        contador +=1
+        try:
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rpp-app"]/main/div[2]/div[1]/div[2]/button'))).click()
+        except:
+            driver.execute_script("window.scrollBy(0, 10000);")
+
+        time.sleep(2)
+
+
+lnks=driver.find_elements(By.TAG_NAME,"a")
+waow = [i.get_attribute("href") for i in lnks]
+indi = waow.index('https://gestion.pe/economia/')
+waow = waow[indi+1:]
+waow = [i for i in waow if len(i)>50]
+
+
+textosG = []
+for i in waow[:-1]:
+    textosG.append(sacaText(i))
+
+
+ural = 'https://elcomercio.pe/archivo/todas/2025-11-19/'
+driver = webdriver.Chrome()
+driver.get(ural)
+val = True
+wait = WebDriverWait(driver, 10)
+
+contador = 0
+
+while contador <= 6:
+        driver.execute_script("window.scrollBy(0, 10000);")
+        contador +=1
+        try:
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rpp-app"]/main/div[2]/div[1]/div[2]/button'))).click()
+        except:
+            driver.execute_script("window.scrollBy(0, 10000);")
+
+        time.sleep(2)
+        
+
+
+lnks=driver.find_elements(By.TAG_NAME,"a", class_="story-item__title block overflow-hidden primary-font line-h-xs mt-10")
+waow = [i.get_attribute("href") for i in lnks]
+waow = [i for i in waow if len(i)>50]
+
+
+textosC = []
+for i in waow[:-1]:
+    textos.append(sacaText(i))
+
+
+coso ="calcula si estas noticias son de arbitraje o no"+" | " + "| ".join([i for i in textos if type(i) != type(None)])
+
+
+
+keywords = [
+    "arbitraje",
+    "arbitraje comercial",
+    "arbitraje internacional",
+    "arbitraje de inversiones",
+    "tribunal arbitral",
+    "laudo arbitral",
+    "ejecución de laudo",
+    "centro de arbitraje",
+    "cláusula arbitral",
+    "convención arbitral",
+    "arbitraje institucional",
+    "arbitraje ad hoc",
+    "resolución de disputas",
+    "resolución alternativa de disputas (ADR)",
+    "mecanismos de resolución de controversias",
+    "mediación",
+    "conciliación",
+    "negociación",
+    "litigio",
+    "litigio civil",
+    "litigio comercial",
+    "proceso judicial",
+    "demanda",
+    "culpa",
+    "controversias contractuales",
+    "conflictos comerciales",
+    "disputas societarias",
+    "disputas contractuales",
+    "derecho procesal",
+    "jurisdicción",
+    "competencia arbitral",
+    "impugnación de árbitros",
+    "debido proceso arbitral",
+    "conflicto de intereses en arbitraje",
+    "medidas cautelares en arbitraje",
+    "reconocimiento y ejecución",
+    "convención de Nueva York",
+    "derecho internacional privado",
+    "peritaje en arbitraje",
+    "arbitraje de obra pública",
+    "arbitraje en contratación estatal",
+    "arbitraje en construcción",
+    "indemnización",
+    "extracontractual",
+    "contractual",
+    "responsabilidad",
+    "legislación",
+    "empresa declara",
+    "soportado gastos",
+    "asumido gastos",
+    "en solitario",
+    "unilateral",
+    "daños",
+    "extrajudicial",
+    "interposición",
+    "afectados ",
+    "afectados identificados",
+    "reparación",
+    "compensaciones",
+    "perjuicios",
+    "daños directos",
+    "perjuicios morales",
+    "terceros afectados",
+    "perjudicados",
+    "daños estimados"
+]
+
+
+
+stems = [
+    stemmer.stem(text)
+    for text in keywords
+]
+stems
+
+
+
+stems2 = [
+    [stemmer.stem(word) for word in text.split() if word is not None]
+    for text in textosG if text is not None
+]
+
+
+cants = [0 for i in textosG]
+for x,i in enumerate(textosG):
+    for j in keywords:
+        try:
+            cants[x] = cants[x] + int(j in i)
+        except:
+            booooo = 0
+
+
+cants = [0 for _ in stems2]
+
+for idx, text_words in enumerate(stems2):
+    for kw in stems:
+        cants[idx] += text_words.count(kw)
+
+
+ural = 'https://elcomercio.pe/archivo/todas/2025-11-19/'
+driver = webdriver.Chrome()
+driver.get(ural)
+val = True
+wait = WebDriverWait(driver, 10)
+
+contador = 0
+
+while contador <= 6:
+        driver.execute_script("window.scrollBy(0, 10000);")
+        contador +=1
+        try:
+            wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="rpp-app"]/main/div[2]/div[1]/div[2]/button'))).click()
+        except:
+            driver.execute_script("window.scrollBy(0, 10000);")
+
+        time.sleep(1)
+        
+
+
+def sacaTextCom(url):
+    html = rq.get(url,headers = {"user-agent":creds}).content.decode("utf-8")
+    soup = bs(html)
+    try:
+        divs02 = soup.find("h1", class_ = "article__title")
+        divs0 = soup.find("div", class_ = "article__subtitle")
+    except:
+        lalgo = 0
+    try:
+        divs = soup.find("div", class_ = "story-contents__content")
+        list1 = [divs02, divs0, divs]
+        list1 = [i.text.lower() for i in divs]
+    except:
+        return print(url,"no se pudo leer")
+    
+    
+    return " ".join([w for w in re.findall(r'[a-z]+',unidecode(" ".join(list1)).strip().lower()) if w not in sw])
+
+
+textosC = []
+lnks=driver.find_elements(By.TAG_NAME,"a")
+waow = [i.get_attribute("href") for i in lnks]
+waow = [i for i in waow if len(i)>50]
+
+
+textosC = []
+for i in waow[:-1]:
+    textosC.append(sacaTextCom(i))
+
+
+
+
+from nltk.stem.snowball import SnowballStemmer
+stemmer = SnowballStemmer("spanish")
+
+
+stems2 = [
+    [stemmer.stem(word) for word in text.split() if word is not None]
+    for text in textosC if text is not None
+]
+
+
+cants = [0 for _ in stems2]
+
+for idx, text_words in enumerate(stems2):
+    for kw in stems:
+        cants[idx] += text_words.count(kw)
+
+
+
+result = [textosC[i] for i in range(len(cants)) if cants[i] >= 7]
+result
+
+
+def sacaTextInfbae(url):
+    html = rq.get(url,headers = {"user-agent":creds}).content.decode("utf-8")
+    soup = bs(html)
+    try:
+        divs02 = soup.find("h1", class_ = "article__title")
+        divs0 = soup.find("div", class_ = "article__subtitle")
+    except:
+        lalgo = 0
+    try:
+        divs = soup.find("div", class_ = "body-article")
+        list1 = [divs02, divs0, divs]
+        list1 = [i.text.lower() for i in divs]
+    except:
+        return print(url,"no se pudo leer")
+    
+    
+    return " ".join([w for w in re.findall(r'[a-z]+',unidecode(" ".join(list1)).strip().lower()) if w not in sw])
+
+
+bae =sacaTextInfbae('https://www.infobae.com/peru/2024/02/23/repsol-pide-197-millones-dolares-a-una-naviera-por-el-derrame-de-petroleo-en-peru-de-2022/')
+
+
+stems2 = [
+    [stemmer.stem(word) for word in text.split() if word is not None]
+    for text in [bae] if text is not None
+]
+
+
+cants = [0 for _ in stems2]
+
+for idx, text_words in enumerate(stems2):
+    for kw in stems:
+        cants[idx] += text_words.count(kw)
+
+
+cants
+
+
+
+from nltk.stem.snowball import SnowballStemmer
+stemmer = SnowballStemmer("spanish")
+
+
+stems2 = [
+    [stemmer.stem(word) for word in text.split() if word is not None]
+    for text in textos if text is not None
+]
+
+
+stems = [
+    stemmer.stem(text)
+    for text in keywords
+]
+stems
+
+
+import numpy as np
+lisTrue = [i !=0 for i in cants]
+listoso = []
+for x,i in enumerate(lisTrue):
+    if i:
+        listoso.append(cants[x])
+
+
+cants = [0 for _ in stems2]
+
+for idx, text_words in enumerate(stems2):
+    for kw in stems:
+        cants[idx] += text_words.count(kw)
